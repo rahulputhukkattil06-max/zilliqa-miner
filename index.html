@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZILLIQA MINNING</title>
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ZILLIQA MINING</title>
 
 <style>
+:root{
+--bg:#08080f;
+--card:#13131f;
+--violet:#8b5cf6;
+--violet2:#a855f7;
+--text:#fff;
+--muted:#b5b5d3;
+}
+
 *{
 margin:0;
 padding:0;
@@ -16,271 +23,277 @@ font-family:Inter,Arial,sans-serif;
 }
 
 body{
-background:linear-gradient(180deg,#07111d,#0b1c2d,#06131f);
+background:linear-gradient(135deg,#05050b,#120f25,#1b1236);
 color:white;
-padding:18px;
-min-height:100vh;
+padding:20px;
 }
 
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:18px;
-}
-
-.logo-wrap{
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.logo{
-width:58px;
-height:58px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid #38f8ff;
-box-shadow:0 0 20px rgba(56,248,255,.5);
-}
-
-.title{
-font-size:20px;
-font-weight:700;
-}
-
-.menu{
-font-size:28px;
-cursor:pointer;
+.container{
+max-width:700px;
+margin:auto;
 }
 
 .card{
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(12px);
-border:1px solid rgba(255,255,255,.08);
-padding:18px;
-border-radius:20px;
-margin-bottom:16px;
-box-shadow:0 0 30px rgba(0,255,255,.08);
+background:rgba(19,19,31,.95);
+border:1px solid rgba(139,92,246,.3);
+border-radius:24px;
+padding:20px;
+margin-bottom:18px;
+box-shadow:0 0 25px rgba(139,92,246,.15);
 }
 
-.user{
+.logo{
+text-align:center;
+font-size:32px;
+font-weight:800;
+color:#a855f7;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:#b8b8d4;
+margin-bottom:20px;
+}
+
+.uid{
 display:flex;
 justify-content:space-between;
-align-items:center;
-}
-
-.wallet-buttons{
-display:flex;
-gap:10px;
-margin-top:10px;
-}
-
-.btn{
-border:none;
-padding:14px;
-border-radius:14px;
-font-size:15px;
-font-weight:600;
-cursor:pointer;
-width:100%;
-}
-
-.primary{
-background:#16d5ff;
-color:#00141c;
-}
-
-.secondary{
-background:#182d3d;
-color:white;
+margin-bottom:10px;
 }
 
 .balance{
+font-size:48px;
+font-weight:800;
 text-align:center;
-font-size:42px;
-font-weight:700;
-color:#4af4ff;
+color:#a855f7;
+margin:20px 0;
 }
 
 .timer{
-font-size:46px;
-font-weight:800;
+font-size:34px;
+font-weight:700;
 text-align:center;
-margin:10px 0;
+margin-bottom:15px;
 }
 
-.start-btn{
+button{
 width:100%;
-background:#00d8ff;
-color:#00131a;
 padding:16px;
-font-size:18px;
-font-weight:700;
 border:none;
 border-radius:16px;
 cursor:pointer;
+font-size:18px;
+font-weight:700;
+margin-top:10px;
 }
 
-.task{
-display:block;
-padding:14px;
-margin-top:10px;
-border-radius:12px;
-background:#102537;
-text-decoration:none;
+.mine{
+background:linear-gradient(90deg,#8b5cf6,#a855f7);
 color:white;
 }
 
-.ref{
-word-break:break-all;
-margin-top:10px;
-color:#64f7ff;
+.secondary{
+background:#1d1d33;
+color:white;
+border:1px solid #8b5cf6;
 }
 
-.bottom{
-margin-top:20px;
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
-}
-
-.nav{
-background:#102537;
-padding:12px;
+input{
+width:100%;
+padding:14px;
 border-radius:14px;
-text-align:center;
-font-size:13px;
+border:1px solid #444;
+background:#10101a;
+color:white;
+margin-top:10px;
+}
+
+.section-title{
+font-size:20px;
+margin-bottom:10px;
+}
+
+.link{
+display:block;
+text-decoration:none;
+background:#1d1d33;
+padding:14px;
+border-radius:14px;
+color:white;
+margin-top:10px;
+}
+
+.small{
+color:#b5b5d3;
+font-size:14px;
 }
 </style>
 </head>
-
 <body>
 
-<div class="topbar">
-<div class="logo-wrap">
-<img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/3/30/Zilliqa_logo.svg">
-<div>
-<div class="title">ZILLIQA MINNING</div>
-<div style="font-size:12px;color:#8da7b8">Telegram Mini App</div>
-</div>
-</div>
-<div class="menu">⋮</div>
-</div>
+<div class="container">
 
 <div class="card">
-<div class="user">
-<div>
-<div id="username">Loading User...</div>
-<div id="userid">ID: ---</div>
-</div>
-</div>
+<div class="logo">ZILLIQA MINING</div>
+<div class="subtitle">@ZilRewardsMiner_bot</div>
 
-<div class="wallet-buttons">
-<button class="btn primary">Connect MetaMask</button>
-<button class="btn secondary">Trust Wallet</button>
+<div class="uid">
+<span>User ID</span>
+<span id="uid"></span>
 </div>
 </div>
 
 <div class="card">
-<div style="text-align:center;margin-bottom:10px;">POINTS BALANCE</div>
-<div class="balance" id="balance">0</div>
-</div>
+<div class="balance" id="balance">0.000 ZIL</div>
 
-<div class="card">
-<div style="text-align:center;">6-HOUR SESSION TIMER</div>
 <div class="timer" id="timer">06:00:00</div>
 
-<button class="start-btn" onclick="startSession()">
-START SESSION
+<button class="mine" onclick="startMining()">START MINING</button>
+</div>
+
+<div class="card">
+<div class="section-title">Wallet</div>
+
+<input id="wallet" placeholder="Enter Zilliqa wallet address">
+
+<button class="secondary" onclick="saveWallet()">
+Save Address
+</button>
+
+<p class="small" id="walletDisplay">
+No address saved
+</p>
+</div>
+
+<div class="card">
+<div class="section-title">Invite Friends</div>
+
+<p>Reward Example: 200 ZIL per referral</p>
+
+<input id="refLink" readonly>
+
+<button class="secondary" onclick="copyLink()">
+Copy Invite Link
 </button>
 </div>
 
 <div class="card">
-<h3>Invite Friends</h3>
-<div class="ref" id="refLink">
-Loading referral...
-</div>
-</div>
+<div class="section-title">Tasks</div>
 
-<div class="card">
-<h3>Tasks</h3>
-
-<a class="task" href="https://t.me/zilliqaminning" target="_blank">
-📢 Join Official Channel
+<a class="link" href="https://t.me/zilliqaminning" target="_blank">
+Official Channel
 </a>
 
-<a class="task" href="https://t.me/zilliqaglobalchat" target="_blank">
-💬 Join Community Chat
+<a class="link" href="https://t.me/zilliqaglobalchat" target="_blank">
+Global Chat
 </a>
 </div>
 
-<div class="bottom">
-<div class="nav">💰<br>Balance</div>
-<div class="nav">👥<br>Invite</div>
-<div class="nav">⛏️<br>Mining</div>
-<div class="nav">📋<br>Tasks</div>
 </div>
 
 <script>
-const tg = window.Telegram?.WebApp;
+const uid =
+localStorage.getItem("uid") ||
+Math.floor(100000000 + Math.random()*900000000);
 
-if(tg){
-tg.expand();
+localStorage.setItem("uid",uid);
 
-const user = tg.initDataUnsafe?.user;
+document.getElementById("uid").innerText=uid;
+document.getElementById("refLink").value=
+location.origin+"?ref="+uid;
 
-if(user){
-document.getElementById("username").innerText =
-user.first_name || "Telegram User";
+let balance=
+parseFloat(localStorage.getItem("balance")||0);
 
-document.getElementById("userid").innerText =
-"ID: " + user.id;
+updateBalance();
 
-document.getElementById("refLink").innerText =
-"https://t.me/ZilRewardsMiner_bot?start=" + user.id;
+let miningEnd=
+parseInt(localStorage.getItem("miningEnd")||0);
+
+function updateBalance(){
+document.getElementById("balance").innerText=
+balance.toFixed(3)+" ZIL";
 }
-}
 
-let running=false;
+function startMining(){
+const now=Date.now();
 
-function startSession(){
-
-if(running){
-alert("Session already running");
+if(miningEnd>now){
+alert("Mining already active");
 return;
 }
 
-running=true;
+miningEnd=now+(6*60*60*1000);
 
-let seconds=21600;
+localStorage.setItem("miningEnd",miningEnd);
 
-const timer=setInterval(()=>{
+alert("Mining started for 6 hours");
+}
 
-seconds--;
+function tick(){
+const now=Date.now();
 
-const h=Math.floor(seconds/3600);
-const m=Math.floor((seconds%3600)/60);
-const s=seconds%60;
+if(miningEnd>now){
+
+let diff=miningEnd-now;
+
+let h=Math.floor(diff/3600000);
+let m=Math.floor((diff%3600000)/60000);
+let s=Math.floor((diff%60000)/1000);
 
 document.getElementById("timer").innerText=
-String(h).padStart(2,'0')+":"+
-String(m).padStart(2,'0')+":"+
-String(s).padStart(2,'0');
+String(h).padStart(2,"0")+":"+
+String(m).padStart(2,"0")+":"+
+String(s).padStart(2,"0");
 
-if(seconds<=0){
+}else{
 
-clearInterval(timer);
+if(miningEnd!==0){
 
-const bal=document.getElementById("balance");
+balance+=60;
 
-bal.innerText=
-parseInt(bal.innerText)+60;
+localStorage.setItem("balance",balance);
 
-running=false;
+updateBalance();
+
+miningEnd=0;
+
+localStorage.setItem("miningEnd",0);
 }
-},1000);
+
+document.getElementById("timer").innerText=
+"00:00:00";
 }
+}
+
+function saveWallet(){
+const wallet=
+document.getElementById("wallet").value.trim();
+
+localStorage.setItem("wallet",wallet);
+
+document.getElementById("walletDisplay").innerText=
+wallet||"No address saved";
+}
+
+function copyLink(){
+navigator.clipboard.writeText(
+document.getElementById("refLink").value
+);
+alert("Copied");
+}
+
+const savedWallet=
+localStorage.getItem("wallet");
+
+if(savedWallet){
+document.getElementById("walletDisplay").innerText=
+savedWallet;
+}
+
+setInterval(tick,1000);
+tick();
 </script>
 
 </body>
