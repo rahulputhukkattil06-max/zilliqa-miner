@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zilliqa Reward Miner</title>
+    <script src="https://telegram.org"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #17212b;
+            color: #ffffff;
+            margin: 0;
+            padding: 16px;
+            text-align: center;
+            user-select: none;
+        }
+        .card {
+            background-color: #24303f;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .profile-section { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px; }
+        .avatar { width: 45px; height: 45px; background: #0088cc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; }
+        .user-details { text-align: left; }
+        .balance-title { font-size: 14px; color: #708499; margin: 5px 0; text-transform: uppercase; }
+        .balance-value { font-size: 32px; font-weight: bold; color: #2ec4b6; margin: 5px 0; }
+        .btn {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .btn:disabled { background-color: #3d4b5a; color: #708499; cursor: not-allowed; }
+        .btn-wallet { background-color: #2ec4b6; margin-bottom: 10px; }
+        .btn-withdraw { background-color: #e71d36; }
+        .timer-display { font-size: 20px; font-weight: bold; color: #ff9f1c; margin: 10px 0; display: none; }
+        .supply-bar { background: #3d4b5a; border-radius: 10px; height: 10px; margin-top: 10px; overflow: hidden; }
+        .supply-progress { background: #2ec4b6; width: 0.1%; height: 100%; }
+        .ref-box { background: #1c2a38; padding: 10px; border-radius: 6px; font-size: 12px; word-break: break-all; margin-top: 10px; color: #2ec4b6; border: 1px dashed #3d4b5a; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="profile-section">
+            <div class="avatar" id="user-avatar">👤</div>
+            <div class="user-details">
+                <div style="font-weight: bold;" id="user-name">Loading User...</div>
+                <div style="font-size: 12px; color: #708499;" id="user-id">ID: ---------</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="balance-title">💰 Total Balance</div>
+        <div class="balance-value"><span id="balance">0.00</span> ZIL</div>
+        <button class="btn btn-wallet" id="wallet-btn" onclick="connectWallet()">🔌 Connect Wallet</button>
+        <button class="btn btn-withdraw" onclick="withdraw()">↗️ Withdraw</button>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0; color: #ff9f1c;">🚀 Zilliqa Cloud Mining</h3>
+        <p style="font-size: 14px; color: #a2b0c2;">Activate your hardware rig to mine 60 ZIL tokens every 6 hours.</p>
+        
+        <div class="timer-display" id="timer">06:00:00</div>
+        <button class="btn" id="mine-btn" onclick="startMining()">⚡ Start 6-Hour Mining</button>
+        
+        <div style="margin-top: 15px; font-size: 12px; text-align: left; color: #708499;">
+            Global Supply Distributed: <span id="supply-text">12,460 / 10,000,000</span>
+            <div class="supply-bar"><div class="supply-progress" id="supply-progress"></div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h4 style="margin:0; text-align:left;">👥 Invite Friends</h4>
+        <p style="font-size: 13px; color: #a2b0c2; text-align:left; margin: 5px 0;">Earn extra tokens for every active miner you recruit!</p>
+        <div class="ref-box" id="ref-link">https://t.me</div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let currentBalance = parseFloat(localStorage.getItem('zil_balance')) || 0.00;
+        let miningEndTime = localStorage.getItem('mining_end_time') || null;
+        let walletAddress = localStorage.getItem('zil_wallet') || null;
+
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            document.getElementById('user-name').innerText = (user.first_name + ' ' + (user.last_name || '')).trim();
+            document.getElementById('user-id').innerText = "ID: " + user.id;
+            document.getElementById('user-avatar').innerText = user.first_name.charAt(0).toUpperCase();
+            document.getElementById('ref-link').innerText = `https://t.me{user.id}`;
+        }
+
+        function updateUI() {
+            document.getElementById('balance').innerText = currentBalance.toFixed(2);
+            if (walletAddress) {
+                document.getElementById('wallet-btn').innerText = "✅ " + walletAddress.substring(0,6) + "..." + walletAddress.substring(walletAddress.length-4);
+                document.getElementById('wallet-btn').disabled = true;
+            }
+            
+            let currentDistributed = 12460 + currentBalance; 
+            document.getElementById('supply-text').innerText = `${currentDistributed.toLocaleString()} / 10,000,000`;
+            let percentage = (currentDistributed / 10000000) * 100;
+            document.getElementById('supply-progress').style.width = percentage + "%";
+        }
+
+        function connectWallet() {
+            let addr = prompt("Enter your Solana or Zilliqa wallet address to link:");
+            if (addr && addr.length > 10) {
+                walletAddress = addr;
+                localStorage.setItem('zil_wallet', addr);
+                updateUI();
+            }
+        }
+
+        function withdraw() {
+            if (!walletAddress) {
+                alert("❌ Please connect your wallet first!");
+                return;
+            }
+            if (currentBalance < 60) {
+                alert("❌ Minimum withdrawal limit is 60 ZIL!");
+                return;
+            }
+            alert(`🎉 Withdrawal request for ${currentBalance} ZIL submitted! Your tokens will arrive within 24 hours.`);
+            currentBalance = 0;
+            localStorage.setItem('zil_balance', currentBalance);
+            updateUI();
+        }
+
+        function startMining() {
+            const sixHours = 6 * 60 * 60 * 1000; 
+            miningEndTime = Date.now() + Alignment.resolve(sixHours);
+            localStorage.setItem('mining_end_time', miningEndTime);
+            checkMiningStatus();
+        }
+
+        function checkMiningStatus() {
+            if (!miningEndTime) return;
+
+            const remaining = parseInt(miningEndTime) - Date.now();
+            const mineBtn = document.getElementById('mine-btn');
+            const timerDisplay = document.getElementById('timer');
+
+            if (remaining > 0) {
+                mineBtn.disabled = true;
+                mineBtn.innerText = "⛏️ Mining Active...";
+                timerDisplay.style.display = "block";
+                
+                const hours = Math.floor(remaining / (1000 * 60 * 60));
+                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+                
+                timerDisplay.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                
+                setTimeout(checkMiningStatus, 1000);
+            } else {
+                currentBalance += 60.00;
+                localStorage.setItem('zil_balance', currentBalance);
+                miningEndTime = null;
+                localStorage.removeItem('mining_end_time');
+                
+                mineBtn.disabled = false;
+                mineBtn.innerText = "⚡ Start 6-Hour Mining";
+                timerDisplay.style.display = "none";
+                
+                alert("🎉 6-Hour Mining Cycle Complete! +60 ZIL added to your balance.");
+                updateUI();
+            }
+        }
+
+        updateUI();
+        checkMiningStatus();
+    </script>
+</body>
+</html>
