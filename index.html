@@ -2,241 +2,214 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZILLIQA MINING</title>
 
 <style>
-:root{
---bg:#08080f;
---card:#13131f;
---violet:#8b5cf6;
---violet2:#a855f7;
---text:#fff;
---muted:#b5b5d3;
-}
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Inter,Arial,sans-serif;
+font-family:Arial,sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#05050b,#120f25,#1b1236);
+background:#0d0718;
+background:linear-gradient(180deg,#0d0718,#180a2f,#090909);
 color:white;
-padding:20px;
+min-height:100vh;
 }
 
-.container{
-max-width:700px;
-margin:auto;
-}
-
-.card{
-background:rgba(19,19,31,.95);
-border:1px solid rgba(139,92,246,.3);
-border-radius:24px;
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
 padding:20px;
-margin-bottom:18px;
-box-shadow:0 0 25px rgba(139,92,246,.15);
 }
 
 .logo{
-text-align:center;
-font-size:32px;
-font-weight:800;
-color:#a855f7;
-margin-bottom:10px;
+font-size:24px;
+font-weight:bold;
+color:#b26cff;
 }
 
-.subtitle{
+.menu{
+font-size:28px;
+cursor:pointer;
+}
+
+.card{
+width:90%;
+max-width:450px;
+margin:20px auto;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.1);
+border-radius:20px;
+padding:25px;
 text-align:center;
-color:#b8b8d4;
-margin-bottom:20px;
 }
 
 .uid{
-display:flex;
-justify-content:space-between;
+color:#c9a3ff;
 margin-bottom:10px;
 }
 
 .balance{
-font-size:48px;
-font-weight:800;
-text-align:center;
-color:#a855f7;
-margin:20px 0;
+font-size:40px;
+font-weight:bold;
+margin:15px 0;
+color:#d7b4ff;
 }
 
 .timer{
-font-size:34px;
-font-weight:700;
-text-align:center;
-margin-bottom:15px;
+font-size:22px;
+margin:15px 0;
 }
 
-button{
+.btn{
 width:100%;
-padding:16px;
+padding:15px;
 border:none;
-border-radius:16px;
-cursor:pointer;
+border-radius:12px;
+background:#8a2eff;
+color:white;
 font-size:18px;
-font-weight:700;
+cursor:pointer;
 margin-top:10px;
 }
 
-.mine{
-background:linear-gradient(90deg,#8b5cf6,#a855f7);
-color:white;
+.taskbox{
+margin-top:20px;
+text-align:left;
 }
 
-.secondary{
-background:#1d1d33;
-color:white;
-border:1px solid #8b5cf6;
-}
-
-input{
-width:100%;
-padding:14px;
-border-radius:14px;
-border:1px solid #444;
-background:#10101a;
-color:white;
+.task{
+padding:12px;
+background:rgba(255,255,255,0.05);
 margin-top:10px;
+border-radius:12px;
 }
 
-.section-title{
-font-size:20px;
-margin-bottom:10px;
-}
-
-.link{
-display:block;
+a{
+color:#b26cff;
 text-decoration:none;
-background:#1d1d33;
-padding:14px;
-border-radius:14px;
-color:white;
-margin-top:10px;
 }
 
-.small{
-color:#b5b5d3;
-font-size:14px;
+.hidden{
+display:none;
 }
 </style>
 </head>
+
 <body>
 
-<div class="container">
-
-<div class="card">
+<div class="topbar">
 <div class="logo">ZILLIQA MINING</div>
-<div class="subtitle">@ZilRewardsMiner_bot</div>
-
-<div class="uid">
-<span>User ID</span>
-<span id="uid"></span>
-</div>
+<div class="menu" onclick="toggleMenu()">⋮</div>
 </div>
 
-<div class="card">
-<div class="balance" id="balance">0.000 ZIL</div>
+<div id="menuPanel" class="card hidden">
+<h3>Tasks</h3>
 
-<div class="timer" id="timer">06:00:00</div>
-
-<button class="mine" onclick="startMining()">START MINING</button>
-</div>
-
-<div class="card">
-<div class="section-title">Wallet</div>
-
-<input id="wallet" placeholder="Enter Zilliqa wallet address">
-
-<button class="secondary" onclick="saveWallet()">
-Save Address
-</button>
-
-<p class="small" id="walletDisplay">
-No address saved
-</p>
-</div>
-
-<div class="card">
-<div class="section-title">Invite Friends</div>
-
-<p>Reward Example: 200 ZIL per referral</p>
-
-<input id="refLink" readonly>
-
-<button class="secondary" onclick="copyLink()">
-Copy Invite Link
-</button>
-</div>
-
-<div class="card">
-<div class="section-title">Tasks</div>
-
-<a class="link" href="https://t.me/zilliqaminning" target="_blank">
-Official Channel
-</a>
-
-<a class="link" href="https://t.me/zilliqaglobalchat" target="_blank">
-Global Chat
+<div class="task">
+Official Channel<br>
+<a href="https://t.me/zilliqaminning" target="_blank">
+Join Channel
 </a>
 </div>
+
+<div class="task">
+Community Chat<br>
+<a href="https://t.me/zilliqaglobalchat" target="_blank">
+Join Group
+</a>
+</div>
+
+<div class="task">
+Referral Bonus UI Example
+</div>
+</div>
+
+<div class="card">
+
+<div class="uid" id="uid"></div>
+
+<h2>Welcome</h2>
+
+<div class="balance" id="balance">
+1000 ZIL
+</div>
+
+<div class="timer" id="timer">
+24:00:00
+</div>
+
+<button class="btn" onclick="startMining()">
+START MINING
+</button>
 
 </div>
 
 <script>
-const uid =
-localStorage.getItem("uid") ||
-Math.floor(100000000 + Math.random()*900000000);
 
+let uid=localStorage.getItem("uid");
+
+if(!uid){
+uid="UID"+Math.floor(Math.random()*999999);
 localStorage.setItem("uid",uid);
-
-document.getElementById("uid").innerText=uid;
-document.getElementById("refLink").value=
-location.origin+"?ref="+uid;
-
-let balance=
-parseFloat(localStorage.getItem("balance")||0);
-
-updateBalance();
-
-let miningEnd=
-parseInt(localStorage.getItem("miningEnd")||0);
-
-function updateBalance(){
-document.getElementById("balance").innerText=
-balance.toFixed(3)+" ZIL";
 }
 
-function startMining(){
-const now=Date.now();
+document.getElementById("uid").innerText=uid;
 
-if(miningEnd>now){
-alert("Mining already active");
+let balance=parseFloat(localStorage.getItem("balance")||1000);
+document.getElementById("balance").innerText=
+balance.toFixed(0)+" ZIL";
+
+function toggleMenu(){
+document.getElementById("menuPanel")
+.classList.toggle("hidden");
+}
+
+let endTime=localStorage.getItem("endTime");
+
+function startMining(){
+
+if(endTime){
 return;
 }
 
-miningEnd=now+(6*60*60*1000);
+endTime=Date.now()+24*60*60*1000;
 
-localStorage.setItem("miningEnd",miningEnd);
+localStorage.setItem("endTime",endTime);
 
-alert("Mining started for 6 hours");
 }
 
-function tick(){
-const now=Date.now();
+setInterval(()=>{
 
-if(miningEnd>now){
+endTime=localStorage.getItem("endTime");
 
-let diff=miningEnd-now;
+if(!endTime){
+return;
+}
+
+let diff=endTime-Date.now();
+
+if(diff<=0){
+
+balance+=240;
+localStorage.setItem("balance",balance);
+
+document.getElementById("balance")
+.innerText=balance.toFixed(0)+" ZIL";
+
+localStorage.removeItem("endTime");
+
+document.getElementById("timer")
+.innerText="Completed";
+
+return;
+}
 
 let h=Math.floor(diff/3600000);
 let m=Math.floor((diff%3600000)/60000);
@@ -247,53 +220,8 @@ String(h).padStart(2,"0")+":"+
 String(m).padStart(2,"0")+":"+
 String(s).padStart(2,"0");
 
-}else{
+},1000);
 
-if(miningEnd!==0){
-
-balance+=60;
-
-localStorage.setItem("balance",balance);
-
-updateBalance();
-
-miningEnd=0;
-
-localStorage.setItem("miningEnd",0);
-}
-
-document.getElementById("timer").innerText=
-"00:00:00";
-}
-}
-
-function saveWallet(){
-const wallet=
-document.getElementById("wallet").value.trim();
-
-localStorage.setItem("wallet",wallet);
-
-document.getElementById("walletDisplay").innerText=
-wallet||"No address saved";
-}
-
-function copyLink(){
-navigator.clipboard.writeText(
-document.getElementById("refLink").value
-);
-alert("Copied");
-}
-
-const savedWallet=
-localStorage.getItem("wallet");
-
-if(savedWallet){
-document.getElementById("walletDisplay").innerText=
-savedWallet;
-}
-
-setInterval(tick,1000);
-tick();
 </script>
 
 </body>
