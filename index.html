@@ -1,104 +1,285 @@
- <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zilliqa Mining Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZILLIQA MINNING</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,Arial,sans-serif;
+}
+
 body{
-    background:#0f172a;
-    color:white;
-    font-family:Arial,sans-serif;
-    padding:20px;
+background:linear-gradient(180deg,#07111d,#0b1c2d,#06131f);
+color:white;
+padding:18px;
+min-height:100vh;
 }
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.logo-wrap{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo{
+width:58px;
+height:58px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #38f8ff;
+box-shadow:0 0 20px rgba(56,248,255,.5);
+}
+
+.title{
+font-size:20px;
+font-weight:700;
+}
+
+.menu{
+font-size:28px;
+cursor:pointer;
+}
+
 .card{
-    background:#1e293b;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:15px;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,.08);
+padding:18px;
+border-radius:20px;
+margin-bottom:16px;
+box-shadow:0 0 30px rgba(0,255,255,.08);
 }
-button{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:10px;
-    margin-top:10px;
-    font-size:16px;
+
+.user{
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
-.mine{background:#0ea5e9;color:white;}
-.invite{background:#22c55e;color:white;}
+
+.wallet-buttons{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.btn{
+border:none;
+padding:14px;
+border-radius:14px;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+width:100%;
+}
+
+.primary{
+background:#16d5ff;
+color:#00141c;
+}
+
+.secondary{
+background:#182d3d;
+color:white;
+}
+
+.balance{
+text-align:center;
+font-size:42px;
+font-weight:700;
+color:#4af4ff;
+}
+
+.timer{
+font-size:46px;
+font-weight:800;
+text-align:center;
+margin:10px 0;
+}
+
+.start-btn{
+width:100%;
+background:#00d8ff;
+color:#00131a;
+padding:16px;
+font-size:18px;
+font-weight:700;
+border:none;
+border-radius:16px;
+cursor:pointer;
+}
+
+.task{
+display:block;
+padding:14px;
+margin-top:10px;
+border-radius:12px;
+background:#102537;
+text-decoration:none;
+color:white;
+}
+
+.ref{
+word-break:break-all;
+margin-top:10px;
+color:#64f7ff;
+}
+
+.bottom{
+margin-top:20px;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+.nav{
+background:#102537;
+padding:12px;
+border-radius:14px;
+text-align:center;
+font-size:13px;
+}
 </style>
 </head>
+
 <body>
 
-<div class="card">
-    <h2 id="username">Loading User...</h2>
-    <p>ID: <span id="userid">---</span></p>
+<div class="topbar">
+<div class="logo-wrap">
+<img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/3/30/Zilliqa_logo.svg">
+<div>
+<div class="title">ZILLIQA MINNING</div>
+<div style="font-size:12px;color:#8da7b8">Telegram Mini App</div>
+</div>
+</div>
+<div class="menu">⋮</div>
 </div>
 
 <div class="card">
-    <h3>Balance</h3>
-    <h1><span id="balance">0</span> ZIL</h1>
+<div class="user">
+<div>
+<div id="username">Loading User...</div>
+<div id="userid">ID: ---</div>
+</div>
+</div>
+
+<div class="wallet-buttons">
+<button class="btn primary">Connect MetaMask</button>
+<button class="btn secondary">Trust Wallet</button>
+</div>
 </div>
 
 <div class="card">
-    <button class="mine" onclick="startMining()">Start Mining</button>
-    <p id="status">Ready</p>
+<div style="text-align:center;margin-bottom:10px;">POINTS BALANCE</div>
+<div class="balance" id="balance">0</div>
 </div>
 
 <div class="card">
-    <h3>Referral</h3>
-    <p id="ref">Loading...</p>
-    <button class="invite" onclick="copyRef()">Copy Referral Link</button>
+<div style="text-align:center;">6-HOUR SESSION TIMER</div>
+<div class="timer" id="timer">06:00:00</div>
+
+<button class="start-btn" onclick="startSession()">
+START SESSION
+</button>
+</div>
+
+<div class="card">
+<h3>Invite Friends</h3>
+<div class="ref" id="refLink">
+Loading referral...
+</div>
+</div>
+
+<div class="card">
+<h3>Tasks</h3>
+
+<a class="task" href="https://t.me/zilliqaminning" target="_blank">
+📢 Join Official Channel
+</a>
+
+<a class="task" href="https://t.me/zilliqaglobalchat" target="_blank">
+💬 Join Community Chat
+</a>
+</div>
+
+<div class="bottom">
+<div class="nav">💰<br>Balance</div>
+<div class="nav">👥<br>Invite</div>
+<div class="nav">⛏️<br>Mining</div>
+<div class="nav">📋<br>Tasks</div>
 </div>
 
 <script>
-const tg = window.Telegram.WebApp;
+const tg = window.Telegram?.WebApp;
+
+if(tg){
 tg.expand();
 
-let user = tg.initDataUnsafe?.user;
+const user = tg.initDataUnsafe?.user;
 
 if(user){
-    document.getElementById("username").innerText =
-        user.first_name || "Telegram User";
+document.getElementById("username").innerText =
+user.first_name || "Telegram User";
 
-    document.getElementById("userid").innerText =
-        user.id;
+document.getElementById("userid").innerText =
+"ID: " + user.id;
 
-    document.getElementById("ref").innerText =
-        "https://t.me/YOUR_BOT_USERNAME?start=" + user.id;
+document.getElementById("refLink").innerText =
+"https://t.me/ZilRewardsMiner_bot?start=" + user.id;
+}
 }
 
-let balance = 0;
-let mining = false;
+let running=false;
 
-function startMining(){
-    if(mining){
-        alert("Mining already active");
-        return;
-    }
+function startSession(){
 
-    mining = true;
-    document.getElementById("status").innerText =
-        "Mining started (demo)";
-
-    setTimeout(()=>{
-        balance += 60;
-        document.getElementById("balance").innerText = balance;
-        document.getElementById("status").innerText =
-            "Mining completed";
-        mining = false;
-    },10000); // 10 seconds demo
+if(running){
+alert("Session already running");
+return;
 }
 
-function copyRef(){
-    navigator.clipboard.writeText(
-        document.getElementById("ref").innerText
-    );
-    alert("Copied");
+running=true;
+
+let seconds=21600;
+
+const timer=setInterval(()=>{
+
+seconds--;
+
+const h=Math.floor(seconds/3600);
+const m=Math.floor((seconds%3600)/60);
+const s=seconds%60;
+
+document.getElementById("timer").innerText=
+String(h).padStart(2,'0')+":"+
+String(m).padStart(2,'0')+":"+
+String(s).padStart(2,'0');
+
+if(seconds<=0){
+
+clearInterval(timer);
+
+const bal=document.getElementById("balance");
+
+bal.innerText=
+parseInt(bal.innerText)+60;
+
+running=false;
+}
+},1000);
 }
 </script>
 
