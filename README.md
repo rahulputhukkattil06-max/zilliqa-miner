@@ -1,3 +1,3 @@
-<div class="mining-balance">
-   0.000 ZIL
-</div>
+<p style="margin-top:10px;">
+mining interface
+</p>
