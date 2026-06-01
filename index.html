@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ZILLIQA MINING</title>
 
 <style>
@@ -14,213 +14,419 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#0d0718;
-background:linear-gradient(180deg,#0d0718,#180a2f,#090909);
+background:#07070c;
 color:white;
 min-height:100vh;
 }
 
-.topbar{
+.header{
+padding:20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:20px;
+background:linear-gradient(90deg,#4b0082,#0a0a0a);
 }
 
 .logo{
 font-size:24px;
 font-weight:bold;
-color:#b26cff;
-}
-
-.menu{
-font-size:28px;
-cursor:pointer;
-}
-
-.card{
-width:90%;
-max-width:450px;
-margin:20px auto;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,0.1);
-border-radius:20px;
-padding:25px;
-text-align:center;
 }
 
 .uid{
-color:#c9a3ff;
-margin-bottom:10px;
+background:#181828;
+padding:10px 15px;
+border-radius:12px;
+}
+
+.container{
+padding:20px;
+max-width:500px;
+margin:auto;
 }
 
 .balance{
-font-size:40px;
+text-align:center;
+font-size:38px;
 font-weight:bold;
-margin:15px 0;
-color:#d7b4ff;
+margin-top:20px;
+color:#b57cff;
 }
 
-.timer{
-font-size:22px;
-margin:15px 0;
+.coin{
+width:220px;
+height:220px;
+margin:25px auto;
+border-radius:50%;
+background:linear-gradient(135deg,#8f4fff,#4b0082);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:70px;
+cursor:pointer;
+box-shadow:0 0 40px #8f4fff;
+transition:.2s;
+}
+
+.coin:active{
+transform:scale(.95);
+}
+
+.taptext{
+text-align:center;
+margin-bottom:20px;
+color:#bbb;
+}
+
+.stats{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.card{
+flex:1;
+background:#12121d;
+padding:15px;
+border-radius:16px;
+text-align:center;
+}
+
+.progress{
+height:12px;
+background:#1d1d2b;
+border-radius:50px;
+margin-top:20px;
+overflow:hidden;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#8f4fff,#d59cff);
+}
+
+.section{
+background:#12121d;
+padding:15px;
+border-radius:18px;
+margin-top:20px;
+}
+
+.section h3{
+margin-bottom:10px;
+color:#c99dff;
 }
 
 .btn{
+display:block;
 width:100%;
-padding:15px;
+padding:14px;
+margin-top:10px;
 border:none;
-border-radius:12px;
-background:#8a2eff;
+border-radius:14px;
+background:#8f4fff;
 color:white;
-font-size:18px;
+font-weight:bold;
 cursor:pointer;
-margin-top:10px;
 }
 
-.taskbox{
-margin-top:20px;
-text-align:left;
+.btn:hover{
+opacity:.9;
 }
 
-.task{
+input{
+width:100%;
 padding:12px;
-background:rgba(255,255,255,0.05);
-margin-top:10px;
+border:none;
+outline:none;
 border-radius:12px;
+background:#1d1d2b;
+color:white;
+margin-top:10px;
 }
 
-a{
-color:#b26cff;
-text-decoration:none;
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:#11111c;
+display:flex;
+justify-content:space-around;
+padding:15px;
 }
 
-.hidden{
+.nav button{
+background:none;
+border:none;
+color:white;
+font-size:15px;
+cursor:pointer;
+}
+
+.page{
 display:none;
+padding-bottom:90px;
+}
+
+.active{
+display:block;
 }
 </style>
 </head>
 
 <body>
 
-<div class="topbar">
+<div class="header">
 <div class="logo">ZILLIQA MINING</div>
-<div class="menu" onclick="toggleMenu()">⋮</div>
+<div class="uid" id="uid"></div>
 </div>
 
-<div id="menuPanel" class="card hidden">
-<h3>Tasks</h3>
+<div id="home" class="page active">
 
-<div class="task">
-Official Channel<br>
-<a href="https://t.me/zilliqaminning" target="_blank">
-Join Channel
-</a>
+<div class="container">
+
+<div class="balance">
+<span id="balance">100.00</span> ZIL
 </div>
 
-<div class="task">
-Community Chat<br>
-<a href="https://t.me/zilliqaglobalchat" target="_blank">
-Join Group
-</a>
+<div class="coin" onclick="mine()">
+⚡
 </div>
 
-<div class="task">
-Referral Bonus UI Example
+<div class="taptext">
+Tap to earn demo ZIL
 </div>
+
+<div class="stats">
+
+<div class="card">
+<div id="taps">0</div>
+<div>Taps</div>
 </div>
 
 <div class="card">
-
-<div class="uid" id="uid"></div>
-
-<h2>Welcome</h2>
-
-<div class="balance" id="balance">
-1000 ZIL
+<div id="timer">24:00:00</div>
+<div>Cycle</div>
 </div>
 
-<div class="timer" id="timer">
-24:00:00
 </div>
 
-<button class="btn" onclick="startMining()">
-START MINING
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div class="section">
+<h3>Wallet</h3>
+
+<input
+id="wallet"
+placeholder="Enter wallet address">
+
+<button class="btn" onclick="saveWallet()">
+Save Wallet
+</button>
+
+<div id="walletSaved"
+style="margin-top:10px;color:#9cffc8;">
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div id="tasks" class="page">
+
+<div class="container">
+
+<div class="section">
+<h3>Tasks</h3>
+
+<a href="https://t.me/zilliqaminning" target="_blank">
+<button class="btn">
+Join Official Channel
+</button>
+</a>
+
+<a href="https://t.me/zilliqaglobalchat" target="_blank">
+<button class="btn">
+Join Global Chat
+</button>
+</a>
+
+</div>
+
+</div>
+</div>
+
+<div id="refer" class="page">
+
+<div class="container">
+
+<div class="section">
+
+<h3>Referral</h3>
+
+<input id="refLink" readonly>
+
+<button class="btn" onclick="copyRef()">
+Copy Referral Link
 </button>
 
 </div>
 
+</div>
+</div>
+
+<div id="profile" class="page">
+
+<div class="container">
+
+<div class="section">
+
+<h3>User Profile</h3>
+
+<p id="profileUid"></p>
+
+<p style="margin-top:10px;">
+Demo mining interface
+</p>
+
+</div>
+
+</div>
+</div>
+
+<div class="nav">
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('tasks')">Tasks</button>
+<button onclick="showPage('refer')">Refer</button>
+<button onclick="showPage('profile')">Profile</button>
+</div>
+
 <script>
 
-let uid=localStorage.getItem("uid");
+let uid = localStorage.getItem("uid");
 
 if(!uid){
-uid="UID"+Math.floor(Math.random()*999999);
+uid = "UID"+Math.floor(Math.random()*999999);
 localStorage.setItem("uid",uid);
 }
 
 document.getElementById("uid").innerText=uid;
+document.getElementById("profileUid").innerText="User ID: "+uid;
 
-let balance=parseFloat(localStorage.getItem("balance")||1000);
+document.getElementById("refLink").value=
+location.origin+
+location.pathname+
+"?ref="+uid;
+
+let balance=
+parseFloat(localStorage.getItem("balance")||100);
+
+let taps=
+parseInt(localStorage.getItem("taps")||0);
+
 document.getElementById("balance").innerText=
-balance.toFixed(0)+" ZIL";
+balance.toFixed(2);
 
-function toggleMenu(){
-document.getElementById("menuPanel")
-.classList.toggle("hidden");
+document.getElementById("taps").innerText=taps;
+
+function mine(){
+
+balance+=0.10;
+taps++;
+
+localStorage.setItem("balance",balance);
+localStorage.setItem("taps",taps);
+
+document.getElementById("balance").innerText=
+balance.toFixed(2);
+
+document.getElementById("taps").innerText=taps;
 }
 
-let endTime=localStorage.getItem("endTime");
+function saveWallet(){
 
-function startMining(){
+let wallet=
+document.getElementById("wallet").value;
 
-if(endTime){
-return;
+localStorage.setItem("wallet",wallet);
+
+document.getElementById("walletSaved")
+.innerText="Wallet Saved";
 }
 
-endTime=Date.now()+24*60*60*1000;
+function copyRef(){
 
-localStorage.setItem("endTime",endTime);
+navigator.clipboard.writeText(
+document.getElementById("refLink").value
+);
 
+alert("Referral link copied");
+}
+
+function showPage(page){
+
+document.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
+
+document.getElementById(page)
+.classList.add("active");
+}
+
+let end=
+localStorage.getItem("cycle");
+
+if(!end){
+
+end=
+Date.now()+86400000;
+
+localStorage.setItem("cycle",end);
 }
 
 setInterval(()=>{
 
-endTime=localStorage.getItem("endTime");
+let left=end-Date.now();
 
-if(!endTime){
-return;
+if(left<=0){
+
+end=Date.now()+86400000;
+
+localStorage.setItem("cycle",end);
+
+left=86400000;
 }
 
-let diff=endTime-Date.now();
-
-if(diff<=0){
-
-balance+=240;
-localStorage.setItem("balance",balance);
-
-document.getElementById("balance")
-.innerText=balance.toFixed(0)+" ZIL";
-
-localStorage.removeItem("endTime");
-
-document.getElementById("timer")
-.innerText="Completed";
-
-return;
-}
-
-let h=Math.floor(diff/3600000);
-let m=Math.floor((diff%3600000)/60000);
-let s=Math.floor((diff%60000)/1000);
+let h=Math.floor(left/3600000);
+let m=Math.floor((left%3600000)/60000);
+let s=Math.floor((left%60000)/1000);
 
 document.getElementById("timer").innerText=
-String(h).padStart(2,"0")+":"+
-String(m).padStart(2,"0")+":"+
-String(s).padStart(2,"0");
+String(h).padStart(2,'0')+
+":"+
+String(m).padStart(2,'0')+
+":"+
+String(s).padStart(2,'0');
+
+let percent=
+((86400000-left)/86400000)*100;
+
+document.getElementById("bar").style.width=
+percent+"%";
 
 },1000);
+
+let wallet=
+localStorage.getItem("wallet");
+
+if(wallet){
+document.getElementById("wallet").value=wallet;
+document.getElementById("walletSaved")
+.innerText="Wallet Saved";
+}
 
 </script>
 
