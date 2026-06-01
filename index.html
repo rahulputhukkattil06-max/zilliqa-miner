@@ -1,272 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>ZILLIQA MINING</title>
+let clicks = parseInt(localStorage.getItem("clicks") || 0);
+let balance = parseFloat(localStorage.getItem("balance") || 0);
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+function mine(){
+
+if(clicks >= 100){
+return;
 }
 
-body{
-background:#07070c;
-color:white;
-min-height:100vh;
+clicks++;
+
+document.getElementById("taps").innerText = clicks;
+
+localStorage.setItem("clicks", clicks);
+
+if(clicks == 100){
+
+balance += 1;
+
+localStorage.setItem("balance", balance);
+
+document.getElementById("balance").innerText =
+balance.toFixed(2);
+
+startCooldown();
+}
+}
+function startCooldown(){
+
+let end = Date.now() + 86400000;
+
+localStorage.setItem("cooldown", end);
+}
+let cooldown = localStorage.getItem("cooldown");
+
+if(cooldown){
+
+setInterval(()=>{
+
+let left = cooldown - Date.now();
+
+if(left <= 0){
+
+localStorage.removeItem("cooldown");
+
+clicks = 0;
+
+localStorage.setItem("clicks",0);
+
+document.getElementById("taps").innerText = 0;
+
+location.reload();
 }
 
-.header{
-padding:20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:linear-gradient(90deg,#4b0082,#0a0a0a);
+},1000);
+function saveWallet(){
+
+let wallet =
+document.getElementById("wallet").value;
+
+localStorage.setItem("wallet", wallet);
+
+document.getElementById("walletSaved").innerHTML =
+"✅ Wallet Saved Successfully";
 }
-
-.logo{
-font-size:24px;
-font-weight:bold;
-}
-
-.uid{
-background:#181828;
-padding:10px 15px;
-border-radius:12px;
-}
-
-.container{
-padding:20px;
-max-width:500px;
-margin:auto;
-}
-
-.balance{
-text-align:center;
-font-size:38px;
-font-weight:bold;
-margin-top:20px;
-color:#b57cff;
-}
-
-.coin{
-width:220px;
-height:220px;
-margin:25px auto;
-border-radius:50%;
-background:linear-gradient(135deg,#8f4fff,#4b0082);
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:70px;
-cursor:pointer;
-box-shadow:0 0 40px #8f4fff;
-transition:.2s;
-}
-
-.coin:active{
-transform:scale(.95);
-}
-
-.taptext{
-text-align:center;
-margin-bottom:20px;
-color:#bbb;
-}
-
-.stats{
-display:flex;
-gap:10px;
-margin-top:15px;
-}
-
-.card{
-flex:1;
-background:#12121d;
-padding:15px;
-border-radius:16px;
-text-align:center;
-}
-
-.progress{
-height:12px;
-background:#1d1d2b;
-border-radius:50px;
-margin-top:20px;
-overflow:hidden;
-}
-
-.bar{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#8f4fff,#d59cff);
-}
-
-.section{
-background:#12121d;
-padding:15px;
-border-radius:18px;
-margin-top:20px;
-}
-
-.section h3{
-margin-bottom:10px;
-color:#c99dff;
-}
-
-.btn{
-display:block;
-width:100%;
-padding:14px;
-margin-top:10px;
-border:none;
-border-radius:14px;
-background:#8f4fff;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-.btn:hover{
-opacity:.9;
-}
-
-input{
-width:100%;
-padding:12px;
-border:none;
-outline:none;
-border-radius:12px;
-background:#1d1d2b;
-color:white;
-margin-top:10px;
-}
-
-.nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:#11111c;
-display:flex;
-justify-content:space-around;
-padding:15px;
-}
-
-.nav button{
-background:none;
-border:none;
-color:white;
-font-size:15px;
-cursor:pointer;
-}
-
-.page{
-display:none;
-padding-bottom:90px;
-}
-
-.active{
-display:block;
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">
-<div class="logo">ZILLIQA MINING</div>
-<div class="uid" id="uid"></div>
-</div>
-
-<div id="home" class="page active">
-
-<div class="container">
-
-<div class="balance">
-<span id="balance">100.00</span> ZIL
-</div>
-
-<div class="coin" onclick="mine()">
-⚡
-</div>
-
-<div class="taptext">
-Tap to earn demo ZIL
-</div>
-
-<div class="stats">
-
-<div class="card">
-<div id="taps">0</div>
-<div>Taps</div>
-</div>
-
-<div class="card">
-<div id="timer">24:00:00</div>
-<div>Cycle</div>
-</div>
-
-</div>
-
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
-
-<div class="section">
-<h3>Wallet</h3>
-
-<input
-id="wallet"
-placeholder="Enter wallet address">
-
-<button class="btn" onclick="saveWallet()">
-Save Wallet
-</button>
-
-<div id="walletSaved"
-style="margin-top:10px;color:#9cffc8;">
-</div>
-
-</div>
-
-</div>
-</div>
-
-<div id="tasks" class="page">
-
-<div class="container">
-
-<div class="section">
-<h3>Tasks</h3>
-
-<a href="https://t.me/zilliqaminning" target="_blank">
-<button class="btn">
-Join Official Channel
-</button>
-</a>
-
-<a href="https://t.me/zilliqaglobalchat" target="_blank">
-<button class="btn">
-Join Global Chat
-</button>
-</a>
-
-</div>
-
-</div>
-</div>
-
-<div id="refer" class="page">
-
-<div class="container">
-
 <div class="section">
 
-<h3>Referral</h3>
+<h3>Referral System</h3>
+
+<p>Your UID:</p>
+
+<div id="refuid"></div>
+
+<br>
+
+<p>Total Referrals:</p>
+
+<div id="refcount">0</div>
+
+<br>
 
 <input id="refLink" readonly>
 
@@ -275,160 +86,23 @@ Copy Referral Link
 </button>
 
 </div>
-
-</div>
-</div>
-
-<div id="profile" class="page">
-
-<div class="container">
-
-<div class="section">
-
-<h3>User Profile</h3>
-
-<p id="profileUid"></p>
-
-<p style="margin-top:10px;">
-Demo mining interface
-</p>
-
-</div>
-
-</div>
-</div>
-
-<div class="nav">
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('tasks')">Tasks</button>
-<button onclick="showPage('refer')">Refer</button>
-<button onclick="showPage('profile')">Profile</button>
-</div>
-
-<script>
-
-let uid = localStorage.getItem("uid");
-
-if(!uid){
-uid = "UID"+Math.floor(Math.random()*999999);
-localStorage.setItem("uid",uid);
+document.getElementById("refuid").innerText = uid;
+  .coin{
+width:240px;
+height:240px;
+border-radius:50%;
+margin:30px auto;
+background:
+radial-gradient(circle,
+#7f5cff,
+#4d1fff,
+#14002f);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:90px;
+box-shadow:
+0 0 20px #7f5cff,
+0 0 50px #7f5cff;
+border:5px solid #ffd700;
 }
-
-document.getElementById("uid").innerText=uid;
-document.getElementById("profileUid").innerText="User ID: "+uid;
-
-document.getElementById("refLink").value=
-location.origin+
-location.pathname+
-"?ref="+uid;
-
-let balance=
-parseFloat(localStorage.getItem("balance")||100);
-
-let taps=
-parseInt(localStorage.getItem("taps")||0);
-
-document.getElementById("balance").innerText=
-balance.toFixed(2);
-
-document.getElementById("taps").innerText=taps;
-
-function mine(){
-
-balance+=0.10;
-taps++;
-
-localStorage.setItem("balance",balance);
-localStorage.setItem("taps",taps);
-
-document.getElementById("balance").innerText=
-balance.toFixed(2);
-
-document.getElementById("taps").innerText=taps;
-}
-
-function saveWallet(){
-
-let wallet=
-document.getElementById("wallet").value;
-
-localStorage.setItem("wallet",wallet);
-
-document.getElementById("walletSaved")
-.innerText="Wallet Saved";
-}
-
-function copyRef(){
-
-navigator.clipboard.writeText(
-document.getElementById("refLink").value
-);
-
-alert("Referral link copied");
-}
-
-function showPage(page){
-
-document.querySelectorAll(".page")
-.forEach(p=>p.classList.remove("active"));
-
-document.getElementById(page)
-.classList.add("active");
-}
-
-let end=
-localStorage.getItem("cycle");
-
-if(!end){
-
-end=
-Date.now()+86400000;
-
-localStorage.setItem("cycle",end);
-}
-
-setInterval(()=>{
-
-let left=end-Date.now();
-
-if(left<=0){
-
-end=Date.now()+86400000;
-
-localStorage.setItem("cycle",end);
-
-left=86400000;
-}
-
-let h=Math.floor(left/3600000);
-let m=Math.floor((left%3600000)/60000);
-let s=Math.floor((left%60000)/1000);
-
-document.getElementById("timer").innerText=
-String(h).padStart(2,'0')+
-":"+
-String(m).padStart(2,'0')+
-":"+
-String(s).padStart(2,'0');
-
-let percent=
-((86400000-left)/86400000)*100;
-
-document.getElementById("bar").style.width=
-percent+"%";
-
-},1000);
-
-let wallet=
-localStorage.getItem("wallet");
-
-if(wallet){
-document.getElementById("wallet").value=wallet;
-document.getElementById("walletSaved")
-.innerText="Wallet Saved";
-}
-
-</script>
-
-</body>
-</html>
