@@ -1,10 +1,14 @@
-<p style="margin-top:10px;">
-mining interface
-</p>
-<div class="section">
-<h3>⚡ Power Up</h3>
-<p>Coming Soon</p>
-<button class="btn" disabled>
-Coming Soon
-</button>
-</div>
+# Zilliqa Miner
+
+A simple Zilliqa mining interface.
+
+## Features
+- UID System
+- Wallet Connection
+- 100 Click Mining Limit
+- 24 Hour Cooldown After 100 Clicks
+- Referral System
+- Responsive Mobile Design
+
+## Live
+https://zilliqa-miner.vercel.app
